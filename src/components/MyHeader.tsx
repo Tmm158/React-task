@@ -1,4 +1,4 @@
-import { DownOutlined, SmileOutlined } from '@ant-design/icons'
+import { DownOutlined } from '@ant-design/icons'
 import { Dropdown, Menu, Space } from 'antd'
 import React from 'react'
 import './less/myHeader.less'
