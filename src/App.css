@@ -1,1 +1,10 @@
 @import '~antd/dist/antd.css';
+body {
+  background: pink;
+}
+.container {
+  height: 100vh;
+}
+.container .container_content {
+  height: calc(100vh-140px);
+}
