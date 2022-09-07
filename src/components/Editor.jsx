@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import { PageHeader, Button } from 'antd'
+import { useEffect, useRef, useState } from 'react';
+import { PageHeader, Button } from 'antd';
 import E from 'wangeditor'
 
-let editor
+let editor = null
 const Editor = () => {
   const [content, setContent] = useState("");
-
+  const myeditor=useRef(null)
   useEffect(() => {
     // 实例化
-    editor = new E("#myeditor")
+    editor = new E(myeditor.current)
 
     editor.config.onchange = (newHtml) => {
       setContent(newHtml);
@@ -35,7 +35,7 @@ const Editor = () => {
           <Button key="3" type="primary">提交文章</Button>,
         ]}
       ></PageHeader>
-      <div id="myeditor"></div>
+      <div id="myeditor" ref={myeditor}></div>
     </div>
   );
 }

@@ -1,7 +1,9 @@
 import React from 'react'
-const Edit=()=>{
+import Editor from 'components/Editor'
+export default function Edit() {
   return (
-    <div>文章编辑</div>
+    <div>
+      <Editor />
+    </div>
   )
 }
-export default Edit
