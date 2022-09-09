@@ -16,8 +16,9 @@ const router_arr: IRoute[] = [
     component: App as React.FC,
     children: [
       { path: 'list', component: lazy(() => import('pages/List')) },
-      { path: '/edit', component: lazy(() => import('pages/Edit')) },
-      { path: 'means', component: lazy(() => import('pages/Means')) }
+      { path: 'edit', component: lazy(() => import('pages/Edit')) },
+      { path: 'means', component: lazy(() => import('pages/Means')) },
+      { path: 'nameList', component: lazy(() => import('pages/NameList')) }
     ]
   },
   { path: '/login', component: lazy(() => import('Login')) },

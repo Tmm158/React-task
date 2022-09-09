@@ -6,43 +6,41 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu } from 'antd'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.less'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import MyHeader from 'components/MyHeader'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import SubMenu from 'antd/lib/menu/SubMenu'
 
 const { Content, Sider } = Layout
-// 侧边栏数据
-const items2 = [
-  {
-    key: '1',
-    icon: <EditOutlined />,
-    label: '查看文章列表'
-  },
-  {
-    key: '2',
-    icon: <ReadOutlined />,
-    label: '文章编辑'
-  },
-  {
-    key: '3',
-    icon: <FormOutlined />,
-    label: '修改资料'
-  },
-  {
-    key: '4',
-    icon: <UserOutlined />,
-    label: '管理员',
-    children: [{ key: 'sub1', icon: <SelectOutlined />, label: '小编名单' }]
-  }
-]
 // 内容主体模拟数据
 interface IProps {
   key1: number
 }
 function App(props: IProps) {
+  // 解决一刷新就默认选中第一项的问题
+  const [asideKey, setAsideKey] = useState('0')
+  // 获取当前路由
+  const location = useLocation()
+  // 监听路由变化
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/list':
+        setAsideKey('1')
+        break
+      case '/edit':
+        setAsideKey('2')
+        break
+      case '/means':
+        setAsideKey('3')
+        break
+      case '/nameList':
+        setAsideKey('4-1')
+        break
+    }
+  }, [location.pathname])
   return (
     <>
       <Layout className="container">
@@ -55,10 +53,37 @@ function App(props: IProps) {
               mode="inline"
               theme="dark"
               defaultSelectedKeys={['1']}
+              selectedKeys={[asideKey]}
               defaultOpenKeys={['sub1']}
               style={{ height: '100%', borderRight: 0 }}
-              items={items2}
-            />
+            >
+              <Menu.Item key="1">
+                <Link to="/list">
+                  <ReadOutlined />
+                  查看文章列表
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Link to="/edit">
+                  <EditOutlined />
+                  文章编辑
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Link to="/means">
+                  <FormOutlined />
+                  修改资料
+                </Link>
+              </Menu.Item>
+              <SubMenu key="4" icon={<UserOutlined />} title="管理员">
+                <Menu.Item key="4-1">
+                  <Link to="/nameList">
+                    <SelectOutlined />
+                    小编名单
+                  </Link>
+                </Menu.Item>
+              </SubMenu>
+            </Menu>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
             {/* 面包屑 */}
