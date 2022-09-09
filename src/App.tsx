@@ -10,6 +10,8 @@ import React from 'react'
 import './App.less'
 import { Outlet } from 'react-router-dom'
 import MyHeader from 'components/MyHeader'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
 const { Content, Sider } = Layout
 // 侧边栏数据
@@ -37,13 +39,15 @@ const items2 = [
   }
 ]
 // 内容主体模拟数据
-
-const App = () => {
+interface IProps {
+  key1: number
+}
+function App(props: IProps) {
   return (
     <>
       <Layout className="container">
         {/* 头部 */}
-        <MyHeader></MyHeader>
+        <MyHeader key={props.key1}></MyHeader>
         <Layout className="container_content">
           {/* {侧边栏} */}
           <Sider width={200} className="site-layout-background">
@@ -82,9 +86,24 @@ const App = () => {
           Respect | Copyright &copy; 2022 Author tmm
         </footer>
       </Layout>
-
-      <Outlet></Outlet>
     </>
   )
 }
-export default App
+
+// state的映射
+const mapStateToProps = (state: { key: number }) => {
+  return {
+    key1: state.key
+  }
+}
+// dispatch的映射
+// const mapDispatchToProps = (dispatch: Dispatch) => {
+//   return {
+//     changeKeyFn() {
+//       dispatch({ type: 'changeKey' })
+//     }
+//   }
+// }
+
+// 把state和dispatch的方法给props
+export default connect(mapStateToProps)(App)

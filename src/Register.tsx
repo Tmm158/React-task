@@ -1,12 +1,33 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import React from 'react'
 import 'Login.less'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { RegisterApi } from './request/api'
 const logo = require('./assets/images/logo.png')
+interface IRegisterLogin {
+  username: string
+  password: string
+  password1?: string
+}
 const Login = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
+  const navigate = useNavigate()
+  const onFinish = (values: IRegisterLogin) => {
+    let { username, password, password1 } = values
+    if (password !== password1) {
+      message.error('请输入相同的密码', 1.5)
+      return
+    }
+    //注册
+    RegisterApi({ username: username, password: password }).then((res: any) => {
+      //注册成功，跳转登录页面
+      if (res.errCode === 0) {
+        message.success('注册成功', 1.5)
+        setTimeout(() => {
+          navigate('/login')
+        }, 1500)
+      }
+    })
   }
 
   const onFinishFailed = (errorInfo: any) => {
@@ -45,7 +66,7 @@ const Login = () => {
           />
         </Form.Item>
         <Form.Item
-          name="password"
+          name="password1"
           rules={[{ required: true, message: '请输入确认密码！' }]}
         >
           <Input
@@ -61,7 +82,7 @@ const Login = () => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block size="large">
-            Submit
+            注册
           </Button>
         </Form.Item>
       </Form>

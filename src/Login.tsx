@@ -1,12 +1,25 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import React from 'react'
 import 'Login.less'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { LoginApi } from './request/api'
 const logo = require('./assets/images/logo.png')
 const Login = () => {
+  const navigate = useNavigate()
   const onFinish = (values: any) => {
-    console.log('Success:', values)
+    let { username, password } = values
+    LoginApi({ username: username, password: password }).then((res: any) => {
+      //登陆成功，跳转根路径
+      message.success(res.message, 1.5)
+      //保存用户信息
+      localStorage.setItem('username', res.data.username)
+      localStorage.setItem('cms-token', res.data['cms-token'])
+      localStorage.setItem('avatar', res.data.avatar)
+      setTimeout(() => {
+        navigate('/')
+      }, 1500)
+    })
   }
 
   const onFinishFailed = (errorInfo: any) => {
@@ -51,7 +64,7 @@ const Login = () => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block size="large">
-            Submit
+            登录
           </Button>
         </Form.Item>
       </Form>

@@ -13,7 +13,7 @@ interface IRoute {
 const router_arr: IRoute[] = [
   {
     path: '/',
-    component: App,
+    component: App as React.FC,
     children: [
       { path: 'list', component: lazy(() => import('pages/List')) },
       { path: '/edit', component: lazy(() => import('pages/Edit')) },
@@ -33,12 +33,20 @@ const MyRouter = () => {
               // 有子路由
               <Route path={item.path} element={<item.component />} key={index}>
                 {item.children.map((e, i) => (
-                  <Route path={e.path} element={<e.component />} key={i}></Route>
+                  <Route
+                    path={e.path}
+                    element={<e.component />}
+                    key={i}
+                  ></Route>
                 ))}
               </Route>
             ) : (
               // 没有子路由
-              <Route path={item.path} element={<item.component />} key={index}></Route>
+              <Route
+                path={item.path}
+                element={<item.component />}
+                key={index}
+              ></Route>
             )
           })}
         </Routes>
